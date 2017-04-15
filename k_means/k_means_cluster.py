@@ -48,6 +48,7 @@ data_dict.pop("TOTAL", 0)
 ### can be any key in the person-level dictionary (salary, director_fees, etc.) 
 feature_1 = "salary"
 feature_2 = "exercised_stock_options"
+feature_3 = "total_payments"
 poi  = "poi"
 features_list = [poi, feature_1, feature_2]
 data = featureFormat(data_dict, features_list )
@@ -65,8 +66,39 @@ plt.show()
 ### cluster here; create predictions of the cluster labels
 ### for the data and store them to a list called pred
 
+from sklearn.cluster import KMeans
 
+kmeans = KMeans(n_clusters=2, random_state=0).fit(finance_features)
 
+pred = kmeans.predict(finance_features)
+
+#Feature scaling
+
+from sklearn.preprocessing import MinMaxScaler
+import numpy
+
+min_max_scaler = MinMaxScaler()
+min_max_scaler.fit_transform(finance_features)
+
+print min_max_scaler.transform([200000., 1000000.])
+
+"""
+
+sal = feature_1.astype(np.float)
+
+eso = feature_2.astype(np.float)
+
+scaler = MinMaxScaler()
+
+scaled_salary = scaler.fit_transform(sal)
+
+print "scaled 200k salary:",  scaler.transform(200000.0)
+
+scaled_eso = scaler.fit_transform(eso)
+
+print "scaled 1m eso:",  scaler.transform(1000000.0)
+
+"""
 
 ### rename the "name" parameter when you change the number of features
 ### so that the figure gets saved to a different file
@@ -74,3 +106,23 @@ try:
     Draw(pred, finance_features, poi, mark_poi=False, name="clusters.pdf", f1_name=feature_1, f2_name=feature_2)
 except NameError:
     print "no predictions object named pred found, no clusters to plot"
+    
+seq_eso = []
+
+for x in data_dict:
+    if data_dict[x]["exercised_stock_options"] != "NaN":
+        seq_eso.append(data_dict[x]["exercised_stock_options"])
+
+print "max exercised_stock_options:", max(seq_eso)
+print "min exercised_stock_options:", min(seq_eso)
+
+
+
+seq_sal = []
+
+for x in data_dict:
+    if data_dict[x]["salary"] != "NaN":
+        seq_sal.append(data_dict[x]["salary"])
+
+print "max salary:", max(seq_sal)
+print "min salary:", min(seq_sal)

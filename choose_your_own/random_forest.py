@@ -31,22 +31,18 @@ plt.ylabel("grade")
 ### your code here!  name your classifier object clf if you want the 
 ### visualization code (prettyPicture) to show you the decision boundary
 
-from sklearn.svm import SVC
+from sklearn.ensemble import RandomForestClassifier
 
-clf = SVC(kernel="rbf", C=100000.)
-
-# features_train = features_train[:len(features_train)/100]
-# labels_train = labels_train[:len(labels_train)/100]
-
-clf.fit(features_train, labels_train)
+clf = RandomForestClassifier(n_estimators=10)
+clf = clf.fit(features_train, labels_train)
 
 pred = clf.predict(features_test)
 
 from sklearn.metrics import accuracy_score
 
-acc = accuracy_score(pred, labels_test)
+accuracy = accuracy_score(labels_test, pred)
 
-print acc
+print accuracy
 
 try:
     prettyPicture(clf, features_test, labels_test)

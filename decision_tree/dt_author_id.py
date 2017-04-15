@@ -44,4 +44,7 @@ print accuracy
 
 #########################################################
 
+print "Features sorted by their score:"
+print sorted(zip(map(lambda x: round(x, 4), clf.feature_importances_), features_train), 
+             reverse=True)
 
