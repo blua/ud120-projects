@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python2
 
 
 """
@@ -22,11 +22,22 @@ data_dict = pickle.load(open("../final_project/final_project_dataset.pkl", "r") 
 ### have a different feature list when you do the final project.
 features_list = ["poi", "salary"]
 
-data = featureFormat(data_dict, features_list)
+data = featureFormat(data_dict, features_list, )
 labels, features = targetFeatureSplit(data)
 
+### it's all yours from here forward!
 
+from sklearn import cross_validation
+features_train, features_test, labels_train, labels_test = cross_validation.train_test_split(features, labels, test_size=0.3, random_state=42)
 
-### it's all yours from here forward!  
+from sklearn import tree
+clf = tree.DecisionTreeClassifier()
+clf = clf.fit(features_train, labels_train)
+pred = clf.predict(features_test)
 
+from sklearn.metrics import accuracy_score
+
+accuracy = accuracy_score(labels_test, pred)
+
+print accuracy
 
